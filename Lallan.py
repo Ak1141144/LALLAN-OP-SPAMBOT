@@ -15,6 +15,7 @@ from telethon.sessions import StringSession
 from telethon.tl import functions, types
 from telethon.tl.functions.channels import GetFullChannelRequest, LeaveChannelRequest
 from telethon.tl.functions.messages import GetFullChatRequest, ImportChatInviteRequest
+from Utils import RAID, RRAID
 
 from Config import (
     API_HASH,
@@ -31,7 +32,6 @@ from Config import (
     STRING10,
     SUDO,
 )
-from Utils import RAID, RRAID
 
 a = API_ID
 b = API_HASH
@@ -372,7 +372,7 @@ async def _(e):
 @bdk.on(events.NewMessage(incoming=True, pattern=r"\.leave"))
 @cdk.on(events.NewMessage(incoming=True, pattern=r"\.leave"))
 @edk.on(events.NewMessage(incoming=True, pattern=r"\.leave"))
-@ddk.on(events.NewMessage(incoming=True, pattern=r"\.leave"))        
+@ddk.on(events.NewMessage(incoming=True, pattern=r"\.leave"))
 async def _(e):
     usage = "𝗠𝗼𝗱𝘂𝗹𝗲 𝗡𝗮𝗺𝗲 = 𝗟𝗲𝗮𝘃𝗲\n\nCommand:\n\n.leave <Channel or Chat ID>"
     if e.sender_id in SMEX_USERS:
@@ -381,15 +381,15 @@ async def _(e):
             bc = Lallan[0]
             bc = int(bc)
             text = "Leaving....."
-            event = await e.reply(text, parse_mode=None, link_preview=None )
+            event = await e.reply(text, parse_mode=None, link_preview=None)
             try:
                 await event.client(LeaveChannelRequest(bc))
                 await event.edit("Succesfully Left")
             except Exception as e:
-                await event.edit(str(e))   
+                await event.edit(str(e))
         else:
-            await e.reply(usage, parse_mode=None, link_preview=None )
-            
+            await e.reply(usage, parse_mode=None, link_preview=None)
+
 
 @idk.on(events.NewMessage(incoming=True, pattern=r"\.spam"))
 @ydk.on(events.NewMessage(incoming=True, pattern=r"\.spam"))
@@ -702,7 +702,9 @@ async def ping(e):
         event = await e.reply(text, parse_mode=None, link_preview=None)
         end = datetime.now()
         ms = (end - start).microseconds / 1000
-        await event.edit(f"🤖 𝗣𝗼𝗻𝗴!\n`{ms}` 𝗺𝘀\n ▌│█║▌║▌║ L̷A̷L̷L̷A̷N̷ ̷O̷P̷ ̷A̷F̷ ║▌║▌║█│▌")
+        await event.edit(
+            f"🤖 𝗣𝗼𝗻𝗴!\n`{ms}` 𝗺𝘀\n ▌│█║▌║▌║ L̷A̷L̷L̷A̷N̷ ̷O̷P̷ ̷A̷F̷ ║▌║▌║█│▌"
+        )
 
 
 @idk.on(events.NewMessage(incoming=True, pattern=r"\.restart"))
@@ -782,15 +784,6 @@ async def help(e):
 # --------------------------------------------------------------------------------------------------------------------------------
 
 
-from telethon.errors import (
-    ChannelInvalidError,
-    ChannelPrivateError,
-    ChannelPublicGroupNaError,
-)
-from telethon.tl import functions
-from telethon.tl.functions.channels import GetFullChannelRequest
-from telethon.tl.functions.messages import GetFullChatRequest
-
 async def get_chatinfo(event):
     chat = event.pattern_match.group(1)
     chat_info = None
@@ -808,7 +801,7 @@ async def get_chatinfo(event):
             chat = event.chat_id
     try:
         chat_info = await event.client(GetFullChatRequest(chat))
-    except:
+    except BaseException:
         try:
             chat_info = await event.client(GetFullChannelRequest(chat))
         except ChannelInvalidError:
@@ -833,6 +826,7 @@ def user_full_name(user):
     names = [i for i in list(names) if i]
     full_name = " ".join(names)
     return full_name
+
 
 @idk.on(events.NewMessage(incoming=True, pattern=r"\.inviteall"))
 @ydk.on(events.NewMessage(incoming=True, pattern=r"\.inviteall"))
@@ -888,8 +882,6 @@ async def get_users(event):
     )
 
 
-
-
 text = """
 ░░╚██╔╝░░██║░░░██║██╔═██╗░██╔═██╗░██║
 ░░░██║░░░╚██████╔╝██║░╚██╗██║░╚██╗██║
@@ -897,9 +889,7 @@ text = """
 
 print(text)
 print("")
-print(
-    "BHOSHDIKO CHAL GYA H BOT AB JAKE SPAM ME GAAND MARAO KAHI........."
-)
+print("BHOSHDIKO CHAL GYA H BOT AB JAKE SPAM ME GAAND MARAO KAHI.........")
 if len(sys.argv) not in (1, 3, 4):
     try:
         idk.disconnect()
