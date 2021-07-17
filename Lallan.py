@@ -290,7 +290,7 @@ async def start_Lallan():
 
 
 loop = asyncio.get_event_loop()
-loop.run_until_complete(start_Lethal())
+loop.run_until_complete(start_Lallan())
 
 
 async def gifspam(e, smex):
